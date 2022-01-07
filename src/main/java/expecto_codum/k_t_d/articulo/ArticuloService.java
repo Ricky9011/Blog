@@ -4,9 +4,14 @@ import expecto_codum.k_t_d.tema.Tema;
 import expecto_codum.k_t_d.tema.TemaRepository;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+
 
 
 @Service
@@ -69,5 +74,16 @@ public class ArticuloService {
         }
         return articulo;
     }
+    
+  
+    
+    public Page<Articulo> findAllOrderedByDatePageable(int page) {
+        return articuloRepository.findAllByOrderByCreateDateDesc(PageRequest.of(subtractPageByOne(page),5));
+    }
+   // PageRequest(subtractPageByOne(page),5)
+    private int subtractPageByOne(int page){
+        return (page < 1) ? 0 : page - 1;
+    }
+  
 
 }
